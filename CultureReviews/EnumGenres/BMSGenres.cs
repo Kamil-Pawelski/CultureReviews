@@ -1,0 +1,22 @@
+﻿public enum BMSGenres
+{
+    ACTION,
+    ADVENTURE,
+    ANIME,
+    AUTOBROGRAPIES,
+    BIOGRAPHIES,
+    COMEDY,
+    CRIME,
+    DOCUMENTARY,
+    DETECTIVE,
+    FANTASY,
+    HISTORICAL,
+    HORROR,
+    ROMANCE,
+    SATIRE,
+    SCIENCE_FICTION,
+    THRILLER,
+    WESTERN
+
+
+}
