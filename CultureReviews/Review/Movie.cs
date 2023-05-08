@@ -14,6 +14,7 @@ namespace CultureReviews
         {
             this.genre = genre;
             this.time = time;
+            Data.MoviesData = this;
         }
 
         public BMSGenres Genre

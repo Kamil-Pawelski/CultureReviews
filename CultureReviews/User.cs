@@ -29,6 +29,8 @@ namespace CultureReviews
             music = new List<Music>();
             series = new List<Series>();
             games = new List<Game>();
+            if(this != null)
+            Data.UserData = this;
         }
 
         public uint ID { get { return id; } }

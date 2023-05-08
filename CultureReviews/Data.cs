@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CultureReviews
 {
     public static class Data
     {
         private static Dictionary<string, User> users = new Dictionary<string, User>();
         private static List<Book> books = new List<Book>();
-        private static List<Movie> movie = new List<Movie>();
+        private static List<Movie> movies = new List<Movie>();
         private static List<Music> music = new List<Music>();
         private static List<Game> games = new List<Game>();
         private static List<Series> series = new List<Series>();
@@ -23,8 +23,8 @@ namespace CultureReviews
         public static Book BooksData {  set { books.Add(value); } }
         
         public static List<Book> BookList { get { return books; } }
-        public static Movie MoviesData { set { movie.Add(value); } }
-        public static List<Movie> MoviesList { get { return movie; } }
+        public static Movie MoviesData { set { movies.Add(value); } }
+        public static List<Movie> MoviesList { get { return movies; } }
         public static Music MusicData { set {  music.Add(value); } }
         public static List<Music> MusicList { get { return music; } }
         public static Game GamesData { set {  games.Add(value); } }
@@ -33,31 +33,31 @@ namespace CultureReviews
 
         public static List<Series> SeriesList { get { return series; } }
 
-        public static void Save(string filePath) //sprawdzić potem
+        public static void Save(string fileName)
         {
-            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            string folderPath = "..\\..\\..\\";
+            string filePath = Path.Combine(folderPath, fileName);
+            using (StreamWriter file = File.CreateText(filePath))
             {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, users);
-                formatter.Serialize(stream, books);
-                formatter.Serialize(stream, movie);
-                formatter.Serialize(stream, music);
-                formatter.Serialize(stream, games);
-                formatter.Serialize(stream, series);
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, new { Users = users, Books = books, Movies = movies, Music = music, Games = games, Series = series });
             }
         }
+
         public static void Load(string filePath)
         {
-            using (FileStream stream = new FileStream(filePath, FileMode.Open))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                users = (Dictionary<string, User>)formatter.Deserialize(stream);
-                books = (List<Book>)formatter.Deserialize(stream);
-                movie = (List<Movie>)formatter.Deserialize(stream);
-                music = (List<Music>)formatter.Deserialize(stream);
-                games = (List<Game>)formatter.Deserialize(stream);
-                series = (List<Series>)formatter.Deserialize(stream);
+            using (StreamReader file = File.OpenText(filePath))
+            { //załatwić null
+                JsonSerializer serializer = new JsonSerializer();
+                users = (Dictionary<string, User>)serializer.Deserialize(file, typeof(Dictionary<string, User>));
+                books = (List<Book>)serializer.Deserialize(file, typeof(List<Book>));
+                movies = (List<Movie>)serializer.Deserialize(file, typeof(List<Movie>));
+                music = (List<Music>)serializer.Deserialize(file, typeof(List<Music>));
+                games = (List<Game>)serializer.Deserialize(file, typeof(List<Game>));
+                series = (List<Series>)serializer.Deserialize(file, typeof(List<Series>));
+
             }
+
         }
     }
 }
